@@ -1,6 +1,6 @@
 {
 	"name": "use-md",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "Hook-like functions to run in your Gatsby or Next.js app",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
