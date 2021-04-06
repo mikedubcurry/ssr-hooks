@@ -6,6 +6,7 @@ type MDownFile = {
 	frontmatter: {
 		[key: string]: string | number;
 	};
+	filename: string;
 	content: string;
 };
 
@@ -13,8 +14,13 @@ interface GetMDownFilesOptions {
 	html: boolean;
 }
 
-class FileReader {
+export class FileReaderCreationError extends Error {}
+
+export class FileReader {
 	constructor(private filesPath: string) {
+		if (!filesPath) {
+			throw new FileReaderCreationError('must include `filesPath`');
+		}
 		this.filesPath = filesPath;
 	}
 
@@ -48,6 +54,7 @@ class FileReader {
 					: data.content;
 			files.push({
 				content,
+				filename: dir[i],
 				frontmatter: data.data,
 			});
 		}
@@ -60,14 +67,29 @@ class FileReader {
 			throw Error('no input passed: ' + input);
 		}
 	}
+
+	public async getMDownFile(f: string, options: GetMDownFilesOptions): Promise<MDownFile> {
+		const fileName = f.endsWith('.md') ? f : f + '.md';
+		const file = await (await this.getMDownFiles(options)).filter(f => f.filename === fileName)[0];
+
+		return file;
+	}
 }
 
-async function main() {
-	const rd = new FileReader('./blog');
-
-	const files = await rd.getMDownFiles({ html: true });
-
-	console.log(files);
+export async function useMarkdownFiles(
+	filePath: string,
+	html: boolean = false
+): Promise<MDownFile[]> {
+	return await new FileReader(filePath).getMDownFiles({ html });
 }
 
-main();
+// async function main() {
+// 	// const rd = new FileReader('./blog');
+
+// 	// const files = await rd.getMDownFiles({ html: true });
+
+// 	const files = await useMarkdownFiles('./blog');
+// 	console.log(files);
+// }
+
+// main();
