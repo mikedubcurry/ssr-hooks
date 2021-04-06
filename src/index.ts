@@ -68,28 +68,22 @@ export class FileReader {
 		}
 	}
 
-	public async getMDownFile(f: string, options: GetMDownFilesOptions): Promise<MDownFile> {
+	public async getMDownFile(
+		f: string,
+		options: GetMDownFilesOptions
+	): Promise<MDownFile> {
 		const fileName = f.endsWith('.md') ? f : f + '.md';
-		const file = await (await this.getMDownFiles(options)).filter(f => f.filename === fileName)[0];
+		const file = await (await this.getMDownFiles(options)).filter(
+			(f) => f.filename === fileName
+		)[0];
 
 		return file;
 	}
 }
 
 export async function useMarkdownFiles(
-	filePath: string,
+	dirPath: string,
 	html: boolean = false
 ): Promise<MDownFile[]> {
-	return await new FileReader(filePath).getMDownFiles({ html });
+	return await new FileReader(dirPath).getMDownFiles({ html });
 }
-
-// async function main() {
-// 	// const rd = new FileReader('./blog');
-
-// 	// const files = await rd.getMDownFiles({ html: true });
-
-// 	const files = await useMarkdownFiles('./blog');
-// 	console.log(files);
-// }
-
-// main();

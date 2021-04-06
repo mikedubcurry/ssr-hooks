@@ -1,5 +1,5 @@
 {
-	"name": "ssr-hooks",
+	"name": "use-md",
 	"version": "0.1.0",
 	"description": "Hook-like functions to run in your Gatsby or Next.js app",
 	"main": "dist/index.js",
@@ -7,6 +7,10 @@
 	"files": [
 		"/dist"
 	],
+	"scripts": {
+		"test": "jest",
+		"build": "tsc"
+	},
 	"devDependencies": {
 		"@types/jest": "^26.0.22",
 		"@types/markdown-it": "^12.0.1",
